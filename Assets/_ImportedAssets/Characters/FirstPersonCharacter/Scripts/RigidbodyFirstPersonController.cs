@@ -187,17 +187,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-
-		//TESTING METHOD FOR COLLISION - ALI
-		private void OnTriggerEnter(Collider other)
-		{
-			if (other.gameObject.CompareTag ("Soul")) 
-			{
-				Debug.Log ("this is a soul");
-			}
-		}
-
-
         private float SlopeMultiplier()
         {
             float angle = Vector3.Angle(m_GroundContactNormal, Vector3.up);

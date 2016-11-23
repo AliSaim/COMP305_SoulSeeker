@@ -134,19 +134,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-
-		//TESTING METHOD FOR COLLISION - ALI
-		private void OnTriggerEnter(Collider other)
-		{
-			if (other.gameObject.CompareTag ("Soul")) 
-			{
-				Debug.Log ("this is a soul");
-			}
-		}
-
-
-
-
         private void PlayJumpSound()
         {
             m_AudioSource.clip = m_JumpSound;
