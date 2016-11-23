@@ -31,22 +31,33 @@ public class GameController : MonoBehaviour {
 	public Text GameOverLabel;
 
 	[Header("UI Buttons")]
-	public Button RestartButton;
+	public Button ReplayButton;
 	public Button MainMenuButton;
+
+	[Header("Game Sounds")]
+	public AudioSource GameStartSound;
 
 	// PRIVATE INSTANCE VARIABLES
 	private int _playerLives;
 	private int _soulsCollected;
+	private float _spawnCounter;
+	private bool _bRespawnGhosts;
 
 	// Use this for initialization
 	void Start () 
 	{
-		this._Initialise ();
+		this._initialise ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () 
-	{	
+	{		
+		if (this._bRespawnGhosts == true) {
+			this._spawnCounter += Time.deltaTime;
+			if (this._spawnCounter >= 4f) {
+				this._respawnGhosts ();
+			}
+		}
 	}
 
 	// ACCESSORS
@@ -79,7 +90,7 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	public void RestartGame()
+	public void ReplayGame()
 	{
 		SceneManager.LoadScene ("Main");
 	}
@@ -90,38 +101,59 @@ public class GameController : MonoBehaviour {
 	//
 
 	// INITIALISE
-	private void _Initialise()
+	private void _initialise()
 	{
+		// Hide Ghosts
+		this.RedGhost.gameObject.SetActive (false);
+		this.BlueGhost.gameObject.SetActive (false);
+		this.PinkGhost.gameObject.SetActive (false);
+		this.OrangeGhost.gameObject.SetActive (false);
+		// Hide Labels and Buttons
 		this.GameOverLabel.gameObject.SetActive (false);
 		this.TotalSoulsCollected.gameObject.SetActive (false);
-		this.RestartButton.gameObject.SetActive (false);
+		this.ReplayButton.gameObject.SetActive (false);
 		this.MainMenuButton.gameObject.SetActive (false);
+		// Initialise Values
 		this._playerLives = 3;
 		this._soulsCollected = 0;
+		this._spawnCounter = 0f;
+		// Spawn Player
+		this._Spawn (Player);
+		this._bRespawnGhosts = true;
+		this.GameStartSound.Play();
+	}
+
+	// Respawns All Ghosts
+	private void _respawnGhosts()
+	{		
+		this.RedGhost.gameObject.SetActive (true);
+		this.BlueGhost.gameObject.SetActive (true);
+		this.PinkGhost.gameObject.SetActive (true);
+		this.OrangeGhost.gameObject.SetActive (true);
 		this._Spawn (RedGhost);
 		this._Spawn (BlueGhost);
 		this._Spawn (OrangeGhost);
 		this._Spawn (PinkGhost);
+		this._bRespawnGhosts = false;
 	}
 
-	// SPAWN GHOSTS
-	private void _Spawn(GameObject Ghost)
+	// SPAWN SELECTED OBJECT
+	private void _Spawn(GameObject SpawnObject)
 	{
-		if (Ghost == RedGhost)
-		{
-			RedGhost.transform.position = new Vector3 (-0.5257578f, -0.5f, -0.007659912f);
+		if (SpawnObject == RedGhost) {
+			RedGhost.transform.position = new Vector3 (-1.75f, 0f, 1.2f);
 		}
-		else if (Ghost == BlueGhost)
-		{
-			BlueGhost.transform.position = new Vector3 (3.624242f, -0.5f, -0.007659912f);
+		if (SpawnObject == BlueGhost) {
+			BlueGhost.transform.position = new Vector3 (1.75f, 0f, 1.2f);
 		}
-		else if (Ghost == OrangeGhost)
-		{
-			OrangeGhost.transform.position = new Vector3 (5.284242f, -0.5f, -0.007659912f);
+		if (SpawnObject == OrangeGhost) {
+			OrangeGhost.transform.position = new Vector3 (3.5f, 0f, 1.2f);
 		}
-		else if (Ghost == PinkGhost)
-		{
-			PinkGhost.transform.position = new Vector3 (-2.115758f, -0.5f, -0.007659912f);
+		if (SpawnObject == PinkGhost) {
+			PinkGhost.transform.position = new Vector3 (-3.5f, 0f, 1.2f);
+		}
+		if (SpawnObject == Player) {
+			Player.transform.position = new Vector3 (0f, 0.5f, -3.5f);
 		}
 	}
 
@@ -140,7 +172,8 @@ public class GameController : MonoBehaviour {
 		this.TotalSoulsCollected.gameObject.SetActive(true);
 		this.GameOverLabel.gameObject.SetActive (true);
 		this.TotalSoulsCollected.gameObject.SetActive (true);
-		this.RestartButton.gameObject.SetActive (true);
+		this.ReplayButton.gameObject.SetActive (true);
 	}
+
 
 }
