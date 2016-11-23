@@ -2,10 +2,17 @@
  * File: GameController.cs
  * Students: Taera Kwon (300755802), Ali Saim (300759480)
  * Date Created: 2016-11-22
- * Date Last Modified: 2016-11-22
+ * Date Last Modified: 2016-11-23
  * Last Modified By: Taera Kwon
  * Description: Game controller class for Soul Seeker
  * Revision History:
+ *  Nov 23, 2016:
+ * 					Added Spawn Methods, Spawn Logics, and Audio Listener
+ * 					Added Initialise method, endGame Method
+ * 					Added Game Headers for Labels, Ghosts, Player
+ *  Nov 22, 2016:	
+ * 					Created Game Controller Class
+ * 	
  */
 
 using UnityEngine;
