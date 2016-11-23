@@ -120,6 +120,10 @@ public class GameController : MonoBehaviour {
 		this.TotalSoulsCollected.gameObject.SetActive (false);
 		this.ReplayButton.gameObject.SetActive (false);
 		this.MainMenuButton.gameObject.SetActive (false);
+		// Show Labels
+		this.SoulsCollectedLabel.gameObject.SetActive(true);
+		this.LivesLabel.gameObject.SetActive (true);
+
 		// Initialise Values
 		this._playerLives = 3;
 		this._soulsCollected = 0;

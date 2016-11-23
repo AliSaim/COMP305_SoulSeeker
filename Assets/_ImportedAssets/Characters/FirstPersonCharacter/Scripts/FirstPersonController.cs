@@ -255,5 +255,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
         }
+
+		// Added OnTriggerEnter For Soul and Portal Collision
+
+		private void OnTriggerEnter(Collider other)
+		{
+			Destroy (other.gameObject);
+		}
     }
 }
