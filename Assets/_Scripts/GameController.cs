@@ -62,9 +62,13 @@ public class GameController : MonoBehaviour {
 		if (this._bRespawnGhosts == true) {
 			this._spawnCounter += Time.deltaTime;
 			if (this._spawnCounter >= 4f) {
-				this._respawnGhosts ();
+				this.RespawnGhosts ();
 			}
 		}
+
+		// Set Text
+		this.LivesLabel.text = "TOTAL LIVES: " + this._playerLives;
+		this.SoulsCollectedLabel.text = "SOULS COLLECTED: " + this._soulsCollected;
 	}
 
 	// ACCESSORS
@@ -78,10 +82,22 @@ public class GameController : MonoBehaviour {
 		{
 			this._playerLives = value;
 			// If player lives = 0, end game
-			if (this._playerLives == 0) 
+			if (this._playerLives <= 0) 
 			{
 				this._endGame ();
 			}
+		}
+	}
+
+	public float SpawnCounter
+	{
+		get
+		{
+			return this._spawnCounter;			
+		}
+		set 
+		{
+			this._spawnCounter = value;
 		}
 	}
 
@@ -97,9 +113,30 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	public bool BRespawnGhosts
+	{
+		get
+		{
+			return this._bRespawnGhosts;
+		}
+		set 
+		{
+			this._bRespawnGhosts = value;
+		}
+	}
+
 	public void ReplayGame()
 	{
 		SceneManager.LoadScene ("Main");
+	}
+
+	public void HideGhosts()
+	{
+		// Hide Ghosts
+		RedGhost.gameObject.SetActive (false);
+		BlueGhost.gameObject.SetActive (false);
+		PinkGhost.gameObject.SetActive (false);
+		OrangeGhost.gameObject.SetActive (false);
 	}
 
 
@@ -110,11 +147,8 @@ public class GameController : MonoBehaviour {
 	// INITIALISE
 	private void _initialise()
 	{
-		// Hide Ghosts
-		this.RedGhost.gameObject.SetActive (false);
-		this.BlueGhost.gameObject.SetActive (false);
-		this.PinkGhost.gameObject.SetActive (false);
-		this.OrangeGhost.gameObject.SetActive (false);
+		// Hides Ghosts
+		this.HideGhosts ();
 		// Hide Labels and Buttons
 		this.GameOverLabel.gameObject.SetActive (false);
 		this.TotalSoulsCollected.gameObject.SetActive (false);
@@ -128,28 +162,29 @@ public class GameController : MonoBehaviour {
 		this._playerLives = 3;
 		this._soulsCollected = 0;
 		this._spawnCounter = 0f;
+
 		// Spawn Player
-		this._Spawn (Player);
+		this.Spawn (Player);
 		this._bRespawnGhosts = true;
 		this.GameStartSound.Play();
 	}
 
 	// Respawns All Ghosts
-	private void _respawnGhosts()
+	public void RespawnGhosts()
 	{		
 		this.RedGhost.gameObject.SetActive (true);
 		this.BlueGhost.gameObject.SetActive (true);
 		this.PinkGhost.gameObject.SetActive (true);
 		this.OrangeGhost.gameObject.SetActive (true);
-		this._Spawn (RedGhost);
-		this._Spawn (BlueGhost);
-		this._Spawn (OrangeGhost);
-		this._Spawn (PinkGhost);
+		this.Spawn (RedGhost);
+		this.Spawn (BlueGhost);
+		this.Spawn (OrangeGhost);
+		this.Spawn (PinkGhost);
 		this._bRespawnGhosts = false;
 	}
 
 	// SPAWN SELECTED OBJECT
-	private void _Spawn(GameObject SpawnObject)
+	public void Spawn(GameObject SpawnObject)
 	{
 		if (SpawnObject == RedGhost) {
 			RedGhost.transform.position = new Vector3 (-1.75f, 0f, 1.2f);

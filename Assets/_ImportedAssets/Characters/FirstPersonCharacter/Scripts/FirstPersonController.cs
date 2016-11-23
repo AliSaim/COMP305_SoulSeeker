@@ -1,3 +1,18 @@
+/* Game Title: Soul Seeker
+ * File: FirstPersonController.cs
+ * Students: Taera Kwon (300755802), Ali Saim (300759480)
+ * Date Imported: 2016-11-21
+ * Date Last Modified: 2016-11-23
+ * Last Modified By: Taera Kwon
+ * Description: Controller for Player
+ * Revision History:
+ *  Nov 23, 2016:
+ * 					OnTriggerEnter added
+ *  Nov 22, 2016:	
+ * 					Imported
+ * 	
+ */
+
 using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
@@ -42,6 +57,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+		// Sound Assets
+		[Header("Sound Assets")]
+		public AudioSource soulCollected;
+		public AudioSource ghostHit;
+
+		// Portals
+		[Header("Portals")]
+		public GameObject portal;
+		public GameObject portal1;
+
+
+		// Game Controller
+		public GameController gc;
+
         // Use this for initialization
         private void Start()
         {
@@ -55,7 +84,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
-        }
+		}
 
 
         // Update is called once per frame
@@ -254,13 +283,43 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return;
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+
+
         }
 
 		// Added OnTriggerEnter For Soul and Portal Collision
+		private void OnTriggerEnter(Collider collidedObject)
+		{			
+			// When touches soul
+			if (collidedObject.gameObject.CompareTag ("Soul")) {				
+				this.soulCollected.Play ();
+				gc.SoulsCollected += 1;
+				Destroy (collidedObject.gameObject);
+			}
 
-		private void OnTriggerEnter(Collider other)
-		{
-			Destroy (other.gameObject);
+			// Goes to Portal 1
+			if (collidedObject.gameObject.CompareTag ("Portal")) {
+				this.gameObject.transform.position = portal1.transform.position + new Vector3(-2f,0f,0f);
+			}
+
+			// Goes to Portal 
+			if (collidedObject.gameObject.CompareTag ("Portal1")) {
+				this.gameObject.transform.position = portal.transform.position + new Vector3(2f,0f,0f);
+			}
 		}
+
+		// OnTriggerStay for Ghost Collision
+		private void OnTriggerStay(Collider collidedObject)
+		{
+			if (collidedObject.gameObject.CompareTag ("Ghost")) {
+				this.ghostHit.Play ();
+				gc.Spawn (this.gameObject);
+				gc.HideGhosts ();
+				gc.SpawnCounter = 2f;
+				gc.BRespawnGhosts = true;
+				gc.PlayerLives -= 1;
+			}
+		}
+			
     }
 }
