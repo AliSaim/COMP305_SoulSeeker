@@ -7,6 +7,7 @@
  * Description: Controller for Player
  * Revision History:
  *  Nov 23, 2016:
+ * 					Added Trigger response for Ghosts, Souls, and Portals
  * 					OnTriggerEnter added
  *  Nov 22, 2016:	
  * 					Imported

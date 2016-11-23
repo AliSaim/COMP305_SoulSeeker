@@ -7,6 +7,7 @@
  * Description: Game controller class for Soul Seeker
  * Revision History:
  *  Nov 23, 2016:
+ * 					Added Main menu handler; add/remove cross at start/end
  * 					Added Spawn Methods, Spawn Logics, and Audio Listener
  * 					Added Initialise method, endGame Method
  * 					Added Game Headers for Labels, Ghosts, Player
@@ -24,6 +25,9 @@ public class GameController : MonoBehaviour {
 	// PUBLIC INSTANCE VARIABLES
 	[Header("Player")]
 	public GameObject Player;
+
+	[Header("Cross")]
+	public Image CrossImage;
 
 	[Header("Ghosts")]
 	public GameObject RedGhost;
@@ -125,9 +129,16 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	// To Replay
 	public void ReplayGame()
 	{
 		SceneManager.LoadScene ("Main");
+	}
+
+	// To go back to main menu
+	public void BackToMain()
+	{
+		SceneManager.LoadScene ("MainMenu");
 	}
 
 	public void HideGhosts()
@@ -147,9 +158,12 @@ public class GameController : MonoBehaviour {
 	// INITIALISE
 	private void _initialise()
 	{
+		// Hides Cursor
+		Cursor.visible = false;
 		// Hides Ghosts
 		this.HideGhosts ();
 		// Hide Labels and Buttons
+		this.CrossImage.gameObject.SetActive(true);
 		this.GameOverLabel.gameObject.SetActive (false);
 		this.TotalSoulsCollected.gameObject.SetActive (false);
 		this.ReplayButton.gameObject.SetActive (false);
@@ -206,6 +220,9 @@ public class GameController : MonoBehaviour {
 	// End game method
 	private void _endGame()
 	{
+		// Shows cursor
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 		// Disable 
 		this.Player.gameObject.SetActive (false);
 		this.RedGhost.gameObject.SetActive (false);
@@ -213,12 +230,16 @@ public class GameController : MonoBehaviour {
 		this.PinkGhost.gameObject.SetActive (false);
 		this.OrangeGhost.gameObject.SetActive (false);
 		this.LivesLabel.gameObject.SetActive(false);
+		this.SoulsCollectedLabel.gameObject.SetActive (false);
+		this.CrossImage.gameObject.SetActive(false);
 
 		// Activate
+		this.TotalSoulsCollected.text = "Total Souls Collected: " + this._soulsCollected;
 		this.TotalSoulsCollected.gameObject.SetActive(true);
 		this.GameOverLabel.gameObject.SetActive (true);
 		this.TotalSoulsCollected.gameObject.SetActive (true);
 		this.ReplayButton.gameObject.SetActive (true);
+		this.MainMenuButton.gameObject.SetActive (true);
 	}
 
 
