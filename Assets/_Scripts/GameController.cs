@@ -7,6 +7,7 @@
  * Description: Game controller class for Soul Seeker
  * Revision History:
  *  Nov 23, 2016:
+ * 					Added end condition
  * 					Added Main menu handler; add/remove cross at start/end
  * 					Added Spawn Methods, Spawn Logics, and Audio Listener
  * 					Added Initialise method, endGame Method
@@ -40,6 +41,7 @@ public class GameController : MonoBehaviour {
 	public Text SoulsCollectedLabel;
 	public Text TotalSoulsCollected;
 	public Text GameOverLabel;
+	public Text WonLabel;
 
 	[Header("UI Buttons")]
 	public Button ReplayButton;
@@ -73,6 +75,11 @@ public class GameController : MonoBehaviour {
 		// Set Text
 		this.LivesLabel.text = "TOTAL LIVES: " + this._playerLives;
 		this.SoulsCollectedLabel.text = "SOULS COLLECTED: " + this._soulsCollected;
+
+		// When you win the game
+		if (this._soulsCollected == 80) {
+			this._endGame ();
+		}
 	}
 
 	// ACCESSORS
@@ -168,6 +175,7 @@ public class GameController : MonoBehaviour {
 		this.TotalSoulsCollected.gameObject.SetActive (false);
 		this.ReplayButton.gameObject.SetActive (false);
 		this.MainMenuButton.gameObject.SetActive (false);
+		this.WonLabel.gameObject.SetActive (false);
 		// Show Labels
 		this.SoulsCollectedLabel.gameObject.SetActive(true);
 		this.LivesLabel.gameObject.SetActive (true);
@@ -236,10 +244,16 @@ public class GameController : MonoBehaviour {
 		// Activate
 		this.TotalSoulsCollected.text = "Total Souls Collected: " + this._soulsCollected;
 		this.TotalSoulsCollected.gameObject.SetActive(true);
-		this.GameOverLabel.gameObject.SetActive (true);
 		this.TotalSoulsCollected.gameObject.SetActive (true);
 		this.ReplayButton.gameObject.SetActive (true);
 		this.MainMenuButton.gameObject.SetActive (true);
+
+		// When you win
+		if (this._soulsCollected == 80) {
+			this.WonLabel.gameObject.SetActive (true);
+		} else {
+			this.GameOverLabel.gameObject.SetActive (true);
+		}
 	}
 
 
