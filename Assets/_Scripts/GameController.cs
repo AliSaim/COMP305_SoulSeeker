@@ -7,6 +7,7 @@
  * Description: Game controller class for Soul Seeker
  * Revision History:
  *  Nov 23, 2016:
+ * 					Added panel to increase visibility when game finishes
  * 					Added end condition
  * 					Added Main menu handler; add/remove cross at start/end
  * 					Added Spawn Methods, Spawn Logics, and Audio Listener
@@ -46,6 +47,9 @@ public class GameController : MonoBehaviour {
 	[Header("UI Buttons")]
 	public Button ReplayButton;
 	public Button MainMenuButton;
+
+	[Header("UI Panel")]
+	public GameObject Panel;
 
 	[Header("Game Sounds")]
 	public AudioSource GameStartSound;
@@ -176,6 +180,7 @@ public class GameController : MonoBehaviour {
 		this.ReplayButton.gameObject.SetActive (false);
 		this.MainMenuButton.gameObject.SetActive (false);
 		this.WonLabel.gameObject.SetActive (false);
+		this.Panel.gameObject.SetActive (false);
 		// Show Labels
 		this.SoulsCollectedLabel.gameObject.SetActive(true);
 		this.LivesLabel.gameObject.SetActive (true);
@@ -242,6 +247,7 @@ public class GameController : MonoBehaviour {
 		this.CrossImage.gameObject.SetActive(false);
 
 		// Activate
+		this.Panel.gameObject.SetActive (true);
 		this.TotalSoulsCollected.text = "Total Souls Collected: " + this._soulsCollected;
 		this.TotalSoulsCollected.gameObject.SetActive(true);
 		this.TotalSoulsCollected.gameObject.SetActive (true);
